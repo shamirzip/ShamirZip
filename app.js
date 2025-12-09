@@ -1,3 +1,44 @@
+// Generate dynamic manifest with correct paths
+const generateManifest = () => {
+    const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+    const baseUrl = window.location.origin + basePath;
+    
+    const manifestData = {
+        "name": "Secret Sharing PWA",
+        "short_name": "SecretShare",
+        "description": "Split and combine secrets using Shamir's Secret Sharing",
+        "start_url": basePath || '/',
+        "scope": basePath || '/',
+        "display": "standalone",
+        "background_color": "#ffffff",
+        "theme_color": "#0d6efd",
+        "icons": [
+            {
+                "src": `${basePath}icon-192.png`,
+                "sizes": "192x192",
+                "type": "image/png"
+            },
+            {
+                "src": `${basePath}icon-512.png`,
+                "sizes": "512x512",
+                "type": "image/png"
+            },
+            {
+                "src": `${basePath}icon-512.png`,
+                "sizes": "512x512",
+                "type": "image/png",
+                "purpose": "maskable"
+            }
+        ]
+    };
+    
+    const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
+    const manifestURL = URL.createObjectURL(manifestBlob);
+    document.querySelector('#manifest-link').setAttribute('href', manifestURL);
+};
+
+generateManifest();
+
 // PWA Install prompt handling
 let deferredPrompt;
 const installButton = document.getElementById('installButton');
@@ -35,7 +76,8 @@ window.addEventListener('appinstalled', () => {
 
 // Register service worker
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
+    const swPath = new URL('./sw.js', document.location).href;
+    navigator.serviceWorker.register(swPath)
         .then(reg => console.log('Service Worker registered'))
         .catch(err => console.log('Service Worker registration failed:', err));
 }

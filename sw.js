@@ -1,19 +1,27 @@
-const CACHE_NAME = 'secret-sharing-v6';
+const CACHE_NAME = 'secret-sharing-v7';
+
+// Get the base path from the service worker location
+const getBasePath = () => {
+  const swUrl = new URL(self.location.href);
+  return swUrl.pathname.substring(0, swUrl.pathname.lastIndexOf('/') + 1);
+};
+
+const basePath = getBasePath();
 const urlsToCache = [
-  './',
-  './index.html',
-  './manifest.json',
-  './app.js',
-  './icon-192.png',
-  './icon-512.png',
-  './lib/secrets/secrets.js',
-  './lib/qrcode/qrcode.min.js',
-  './lib/pako/pako.js',
-  './lib/bech32/bech32-browser.js',
-  './lib/qr-scanner/qr-scanner.umd.min.js',
-  './lib/qr-scanner/qr-scanner-worker.min.js',
-  './lib/bootstrap/css/bootstrap.min.css',
-  './lib/bootstrap/js/bootstrap.bundle.min.js'
+  basePath,
+  `${basePath}index.html`,
+  `${basePath}manifest.json`,
+  `${basePath}app.js`,
+  `${basePath}icon-192.png`,
+  `${basePath}icon-512.png`,
+  `${basePath}lib/secrets/secrets.js`,
+  `${basePath}lib/qrcode/qrcode.min.js`,
+  `${basePath}lib/pako/pako.js`,
+  `${basePath}lib/bech32/bech32-browser.js`,
+  `${basePath}lib/qr-scanner/qr-scanner.umd.min.js`,
+  `${basePath}lib/qr-scanner/qr-scanner-worker.min.js`,
+  `${basePath}lib/bootstrap/css/bootstrap.min.css`,
+  `${basePath}lib/bootstrap/js/bootstrap.bundle.min.js`
 ];
 
 // Install event - cache resources
