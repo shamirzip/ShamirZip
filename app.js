@@ -588,6 +588,29 @@ function initQrScanner() {
             returnDetailedScanResult: true,
             highlightScanRegion: true,
             highlightCodeOutline: true,
+            // Maximize scan area for dense QR codes
+            calculateScanRegion: (video) => {
+                // Use the largest possible square from the video frame
+                const width = video.videoWidth;
+                const height = video.videoHeight;
+                const size = Math.min(width, height);
+                
+                // Center the square region
+                const x = (width - size) / 2;
+                const y = (height - size) / 2;
+                
+                // Use higher resolution downscaling (800x800) for better detail capture
+                const downScaledSize = Math.min(800, size);
+                
+                return {
+                    x: x,
+                    y: y,
+                    width: size,
+                    height: size,
+                    downScaledWidth: downScaledSize,
+                    downScaledHeight: downScaledSize
+                };
+            },
         }
     );
     
